@@ -1,7 +1,8 @@
-package com.example.musinsa
+package com.example.musinsa.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.musinsa.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

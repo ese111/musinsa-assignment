@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="Backgrounds1">#FFFFFF</color>
+    <color name="Backgrounds2">#F2F2F7</color>
+    <color name="Backgrounds3">#05000000</color>
+    <color name="Label1">#000000</color>
+    <color name="Label2">#87878D</color>
+    <color name="Label3">#B9B9BF</color>
+    <color name="SaleRate">#FF6600</color>
 </resources>
