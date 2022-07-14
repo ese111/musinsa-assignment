@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.example.musinsa.data.model.StyleData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,7 +13,8 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            setImage="@{item.thumbnailURL}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

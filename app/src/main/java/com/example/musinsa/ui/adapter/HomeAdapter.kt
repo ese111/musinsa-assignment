@@ -8,15 +8,16 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.musinsa.common.Logger
 import com.example.musinsa.data.model.GoodData
 import com.example.musinsa.data.model.HomeData
+import com.example.musinsa.data.model.StyleData
 import com.example.musinsa.databinding.ItemBannersBinding
 import com.example.musinsa.databinding.ItemContentsBinding
 import com.example.musinsa.databinding.ItemContentsStyleBinding
 
 private const val BANNERS = 0
 private const val CONTENTS = 1
-private const val STYLES = 2
 
-class HomeAdapter(private val context: Context) : ListAdapter<HomeData, RecyclerView.ViewHolder>(HomeDiffUtil) {
+class HomeAdapter(private val context: Context) :
+    ListAdapter<HomeData, RecyclerView.ViewHolder>(HomeDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         Logger("onCreateViewHolder")
@@ -43,14 +44,12 @@ class HomeAdapter(private val context: Context) : ListAdapter<HomeData, Recycler
         when (holder) {
             is BannerViewHolder -> holder.bind(getItem(position))
             is ContentViewHolder -> holder.bind(getItem(position))
-            is StylesViewHolder -> holder.bind(getItem(position))
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position).contents.type) {
             "BANNER" -> BANNERS
-            "STYLE" -> STYLES
             else -> CONTENTS
         }
     }
@@ -80,40 +79,49 @@ class HomeAdapter(private val context: Context) : ListAdapter<HomeData, Recycler
         RecyclerView.ViewHolder(binding.root) {
 
         private val gridItemList = mutableListOf<GoodData>()
-        private var paging = 0
+        private val styleItemList = mutableListOf<StyleData>()
+        private var gridPaging = 0
+        private var stylePaging = 0
 
         fun bind(content: HomeData) {
             binding.item = content
-            val adapter = ContentsAdapter()
-            binding.rvContents.adapter = adapter
-            when(content.contents.type) {
+
+            when (content.contents.type) {
                 "SCROLL" -> {
-                    binding.rvContents.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    val adapter = ContentsAdapter()
+                    binding.rvContents.adapter = adapter
+                    binding.rvContents.layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     Logger("SCROLL  ${content.contents.goods}")
                     adapter.submitList(content.contents.goods)
                 }
+
                 "GRID" -> {
+                    val adapter = ContentsAdapter()
+                    binding.rvContents.adapter = adapter
                     binding.rvContents.layoutManager = GridLayoutManager(context, 3)
                     Logger("GRID  ${content.contents.goods}")
                     for (i in 0 until 6) {
                         gridItemList.add(content.contents.goods[i])
-                        paging = i
+                        gridPaging++
                     }
                     adapter.submitList(gridItemList)
 
                 }
+
+                "STYLE" -> {
+                    val adapter = StylesAdapter()
+                    binding.rvContents.adapter = adapter
+                    binding.rvContents.layoutManager = GridLayoutManager(context, 2)
+                    for (i in 0 until 4) {
+                        styleItemList.add(content.contents.styles[i])
+                        stylePaging++
+                    }
+                    adapter.submitList(styleItemList)
+                }
             }
 
         }
-    }
-
-    class StylesViewHolder(private val binding: ItemContentsStyleBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-            fun bind(style: HomeData) {
-
-            }
-
     }
 
     private object HomeDiffUtil : DiffUtil.ItemCallback<HomeData>() {

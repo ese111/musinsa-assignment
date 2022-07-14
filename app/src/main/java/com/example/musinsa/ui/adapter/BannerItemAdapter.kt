@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.musinsa.data.model.BannerData
 import com.example.musinsa.databinding.ItemContentsBannersBinding
 
-class BannerItemAdapter() :
+class BannerItemAdapter:
     ListAdapter<BannerData, BannerItemAdapter.BannerItemViewHolder>(BannerItemDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerItemViewHolder {
