@@ -1,6 +1,7 @@
 package com.example.musinsa.data.dto
 
 
+import com.example.musinsa.common.Logger
 import com.example.musinsa.data.model.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

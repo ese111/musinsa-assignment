@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Musinsa</string>
+    <string name="label_all">전체</string>
+    <string name="page">%d / %d </string>
 </resources>

@@ -4,14 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="current"
+            type="Integer" />
+        <variable
+            name="size"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="350dp">
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_banners_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         
@@ -26,6 +32,7 @@
             app:drawableEndCompat="@drawable/ic_arrow"
             android:layout_marginBottom="30dp"
             android:layout_marginEnd="20dp"
+            android:text="@{@string/page(current, size)}"
             tools:text="4 / 10 "/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

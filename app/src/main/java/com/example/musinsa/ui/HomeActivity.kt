@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musinsa.R
+import com.example.musinsa.common.Logger
 import com.example.musinsa.common.UiState
 import com.example.musinsa.databinding.ActivityHomeBinding
 import com.example.musinsa.ui.adapter.HomeAdapter
@@ -26,24 +28,26 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-        //어뎁터 만들고 데이터 받아서 뿌리기
+        setContentView(binding.root)
 
         val adapter = HomeAdapter()
-        binding.rvHomeView.adapter = adapter
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.homeData.collect {
                     when(it) {
                         is UiState.Error -> Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-                        is UiState.Success -> adapter.submitList(it.data)
-                        is UiState.Loading -> Log.i("TAG", "Loading")
-                        is UiState.Empty -> Log.i("TAG", "empty")
+                        is UiState.Success -> {
+                            adapter.submitList(it.data)
+                            Logger("Success ${it.data.size}")
+                        }
+                        is UiState.Loading -> Logger("Loading")
+                        is UiState.Empty -> Logger("empty")
                     }
                 }
             }
         }
 
+        binding.rvHomeView.adapter = adapter
     }
 }

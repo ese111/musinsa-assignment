@@ -39,7 +39,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="30dp"
-            android:text="전체"/>
+            android:text="@string/label_all"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
