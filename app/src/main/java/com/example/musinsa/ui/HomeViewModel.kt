@@ -15,20 +15,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: HomeRepository
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
     private val _homeData = MutableStateFlow<UiState>(UiState.Empty)
     val homeData: StateFlow<UiState> = _homeData
 
-    fun getHomeData() {
+    init {
+        getHomeData()
+    }
+
+    private fun getHomeData() {
         viewModelScope.launch {
             _homeData.value = UiState.Loading
-            repository.getHomeData()
+            homeRepository.getHomeData()
                 .catch {
                     _homeData.value = UiState.Error("네트워크 연결 실패")
                 }.collect {
-                    _homeData.value = UiState.Success(it)
+                    _homeData.value = it?.let { data -> UiState.Success(data) } ?: UiState.Error("네트워크 연결 실패")
                 }
         }
     }
