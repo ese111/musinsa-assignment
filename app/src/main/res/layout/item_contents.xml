@@ -18,32 +18,40 @@
             android:id="@+id/clo_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintHeight_percent="0.15"
             app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
 
             <ImageView
                 android:id="@+id/iv_icon"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:scaleType="fitStart"
+                android:layout_height="30dp"
+                android:scaleType="center"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_all"
+                app:layout_constraintEnd_toStartOf="@id/tv_icon_title"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.1"
+                app:layout_constraintWidth_percent="0.05"
                 setImage="@{item.header.iconURL}"
-                tools:src="@drawable/ic_launcher_background" />
+                tools:src="@drawable/ic_launcher_background"/>
 
             <TextView
                 android:id="@+id/tv_icon_title"
                 style="@style/header"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5"
+                android:maxLines="2"
                 android:text="@{item.header.title}"
-                tools:text="타이틀" />
+                tools:text="디스커버리 익스페디션 인기 스니커즈: 최대 50% 할인" />
 
             <TextView
                 android:id="@+id/tv_all"
@@ -52,26 +60,27 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="30dp"
+                android:textSize="11sp"
                 setAllButton="@{item.header.iconURL}"
-                android:text="@string/label_all"/>
+                android:text="@string/label_all"
+                app:drawableEndCompat="@drawable/ic_all_page_arrow" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/space_between_title_contents"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.1"
-            app:layout_constraintTop_toBottomOf="@id/clo_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/space_between_title_contents"
+            app:layout_constraintTop_toBottomOf="@id/clo_title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <View
+            android:id="@+id/space_between_btn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.02"
+            app:layout_constraintTop_toBottomOf="@id/rv_contents"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_more"
@@ -79,10 +88,17 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_contents"
+            app:layout_constraintTop_toBottomOf="@id/space_between_btn"
             tools:text="더보기"
             setFooter="@{item.footer}"
             android:background="@drawable/button_shape"/>
+
+        <View
+            android:id="@+id/space_last"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.1"
+            app:layout_constraintTop_toBottomOf="@id/btn_more"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

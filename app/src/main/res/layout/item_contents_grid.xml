@@ -4,20 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="item"
+            type="com.example.musinsa.data.model.GoodData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="180dp">
+
+        <View
+            android:id="@+id/space_start"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintWidth_percent="0.07"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <ImageView
             android:id="@+id/iv_item_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="130dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/space_start"
+            setImage="@{item.thumbnailURL}"
             tools:src="@drawable/ic_launcher_foreground"/>
 
         <TextView
@@ -25,8 +35,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/iv_item_image"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/space_start"
             android:layout_marginTop="10dp"
+            android:textSize="12sp"
+            android:text="@{item.brandName}"
+            android:maxLines="1"
+            android:ellipsize="end"
             tools:text="캐치볼"/>
 
         <TextView
@@ -35,21 +49,23 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_item_brand"
             android:layout_marginTop="5dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/space_start"
             style="@style/numberStyle"
+            app:price="@{item.price}"
             tools:text="395,800원"/>
 
         <TextView
             android:id="@+id/tv_item_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/tv_item_price"
             app:layout_constraintTop_toBottomOf="@id/tv_item_brand"
+            app:layout_constraintEnd_toStartOf="@id/tv_coupon"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:textColor="@color/SaleRate"
             android:textSize="13sp"
             style="@style/numberStyle"
+            setSaleRate="@{item.saleRate}"
             tools:text="20%"/>
 
         <TextView
@@ -57,15 +73,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tv_item_brand"
-            app:layout_constraintStart_toEndOf="@id/tv_item_rate"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/space_end"
             android:background="@drawable/coupon_badge_shape"
             android:textColor="@color/white"
             android:textSize="11sp"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="3dp"
             android:layout_marginEnd="5dp"
-            tools:text="쿠폰"/>
+            app:goneUnless="@{item.hasCoupon}"
+            android:text="@string/label_coupon"/>
+
+        <View
+            android:id="@+id/space_end"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintWidth_percent="0.07"
+            app:layout_constraintStart_toEndOf="@id/iv_item_image"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

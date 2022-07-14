@@ -1,5 +1,6 @@
 package com.example.musinsa.ui.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,14 +11,18 @@ import com.example.musinsa.databinding.ItemContentsGridBinding
 class ContentsAdapter: ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>(ContentsDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentsViewHolder {
-        TODO("Not yet implemented")
+        return ContentsViewHolder(ItemContentsGridBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ContentsViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(getItem(position))
     }
 
     class ContentsViewHolder(private val binding: ItemContentsGridBinding): RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: GoodData) {
+            binding.item = item
+        }
 
     }
 

@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import androidx.viewpager2.widget.ViewPager2
 import com.example.musinsa.common.Logger
+import com.example.musinsa.data.model.GoodData
 import com.example.musinsa.data.model.HomeData
-import com.example.musinsa.data.model.StyleData
 import com.example.musinsa.databinding.ItemBannersBinding
 import com.example.musinsa.databinding.ItemContentsBinding
 import com.example.musinsa.databinding.ItemContentsStyleBinding
@@ -79,14 +79,31 @@ class HomeAdapter(private val context: Context) : ListAdapter<HomeData, Recycler
     inner class ContentViewHolder(private val binding: ItemContentsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val gridItemList = mutableListOf<GoodData>()
+        private var paging = 0
+
         fun bind(content: HomeData) {
             binding.item = content
             val adapter = ContentsAdapter()
             binding.rvContents.adapter = adapter
             when(content.contents.type) {
-                "SCROLL" -> binding.rvContents.layoutManager = LinearLayoutManager(context)
-                "GRID" -> binding.rvContents.layoutManager = GridLayoutManager(context, 3)
+                "SCROLL" -> {
+                    binding.rvContents.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    Logger("SCROLL  ${content.contents.goods}")
+                    adapter.submitList(content.contents.goods)
+                }
+                "GRID" -> {
+                    binding.rvContents.layoutManager = GridLayoutManager(context, 3)
+                    Logger("GRID  ${content.contents.goods}")
+                    for (i in 0 until 6) {
+                        gridItemList.add(content.contents.goods[i])
+                        paging = i
+                    }
+                    adapter.submitList(gridItemList)
+
+                }
             }
+
         }
     }
 
@@ -96,6 +113,7 @@ class HomeAdapter(private val context: Context) : ListAdapter<HomeData, Recycler
             fun bind(style: HomeData) {
 
             }
+
     }
 
     private object HomeDiffUtil : DiffUtil.ItemCallback<HomeData>() {

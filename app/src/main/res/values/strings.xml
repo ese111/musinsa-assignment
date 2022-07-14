@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Musinsa</string>
-    <string name="label_all">전체</string>
+    <string name="label_all">전체 </string>
     <string name="page">%d / %d </string>
+    <string name="sale_rate">%d%%</string>
+    <string name="label_coupon">쿠폰</string>
 </resources>
