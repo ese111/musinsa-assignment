@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import androidx.viewpager2.widget.ViewPager2
-import com.example.musinsa.common.Logger
+import com.example.musinsa.common.logger
 import com.example.musinsa.data.model.GoodData
 import com.example.musinsa.data.model.HomeData
 import com.example.musinsa.data.model.StyleData
 import com.example.musinsa.databinding.ItemBannersBinding
 import com.example.musinsa.databinding.ItemContentsBinding
-import com.example.musinsa.databinding.ItemContentsStyleBinding
 
 private const val BANNERS = 0
 private const val CONTENTS = 1
@@ -20,7 +19,7 @@ class HomeAdapter(private val context: Context) :
     ListAdapter<HomeData, RecyclerView.ViewHolder>(HomeDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Logger("onCreateViewHolder")
+        logger("onCreateViewHolder")
         return when (viewType) {
             BANNERS -> BannerViewHolder(
                 ItemBannersBinding.inflate(
@@ -40,7 +39,7 @@ class HomeAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Logger("onBindViewHolder")
+        logger("onBindViewHolder")
         when (holder) {
             is BannerViewHolder -> holder.bind(getItem(position))
             is ContentViewHolder -> holder.bind(getItem(position))
@@ -92,7 +91,7 @@ class HomeAdapter(private val context: Context) :
                     binding.rvContents.adapter = adapter
                     binding.rvContents.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    Logger("SCROLL  ${content.contents.goods}")
+                    logger("SCROLL  ${content.contents.goods}")
                     adapter.submitList(content.contents.goods)
                 }
 
@@ -100,7 +99,7 @@ class HomeAdapter(private val context: Context) :
                     val adapter = ContentsAdapter()
                     binding.rvContents.adapter = adapter
                     binding.rvContents.layoutManager = GridLayoutManager(context, 3)
-                    Logger("GRID  ${content.contents.goods}")
+                    logger("GRID  ${content.contents.goods}")
                     for (i in 0 until 6) {
                         gridItemList.add(content.contents.goods[i])
                         gridPaging++

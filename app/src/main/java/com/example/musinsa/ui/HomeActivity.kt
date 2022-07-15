@@ -1,16 +1,13 @@
 package com.example.musinsa.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.musinsa.R
-import com.example.musinsa.common.Logger
+import com.example.musinsa.common.logger
 import com.example.musinsa.common.UiState
 import com.example.musinsa.databinding.ActivityHomeBinding
 import com.example.musinsa.ui.adapter.HomeAdapter
@@ -39,10 +36,10 @@ class HomeActivity : AppCompatActivity() {
                         is UiState.Error -> Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
                         is UiState.Success -> {
                             adapter.submitList(it.data)
-                            Logger("Success ${it.data.size}")
+                            logger("Success ${it.data.size}")
                         }
-                        is UiState.Loading -> Logger("Loading")
-                        is UiState.Empty -> Logger("empty")
+                        is UiState.Loading -> logger("Loading")
+                        is UiState.Empty -> logger("empty")
                     }
                 }
             }

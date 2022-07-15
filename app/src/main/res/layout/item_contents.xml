@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clo_title"
             android:layout_width="match_parent"
@@ -27,31 +26,20 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5"/>
 
-            <ImageView
-                android:id="@+id/iv_icon"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:scaleType="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_icon_title"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.05"
-                setImage="@{item.header.iconURL}"
-                tools:src="@drawable/ic_launcher_background"/>
-
             <TextView
                 android:id="@+id/tv_icon_title"
                 style="@style/header"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.5"
                 android:maxLines="2"
+                android:maxWidth="200dp"
                 android:text="@{item.header.title}"
-                tools:text="디스커버리 익스페디션 인기 스니커즈: 최대 50% 할인" />
+                icon="@{item.header.iconURL}"
+                tools:text="디스커버리 익스페디션인기 스니커즈: 최대50% 센트 "/>
 
             <TextView
                 android:id="@+id/tv_all"
