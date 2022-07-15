@@ -6,10 +6,11 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.musinsa.common.logger
 import com.example.musinsa.data.model.StyleData
 import com.example.musinsa.databinding.ItemContentsStyleBinding
 
-class StylesAdapter : ListAdapter<StyleData, StylesAdapter.StyleItemViewHolder>(StyleDiffUtil) {
+class StylesAdapter(private val runWebListener: (String) -> Unit) : ListAdapter<StyleData, StylesAdapter.StyleItemViewHolder>(StyleDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StyleItemViewHolder {
         return StyleItemViewHolder(ItemContentsStyleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -19,11 +20,16 @@ class StylesAdapter : ListAdapter<StyleData, StylesAdapter.StyleItemViewHolder>(
         holder.bind(getItem(position))
     }
 
-    class StyleItemViewHolder(private val binding: ItemContentsStyleBinding) :
+    inner class StyleItemViewHolder(private val binding: ItemContentsStyleBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: StyleData) {
             binding.item = item
+            logger("stlye item ${item.thumbnailURL}")
+
+            itemView.setOnClickListener {
+                runWebListener(item.linkURL)
+            }
         }
 
     }

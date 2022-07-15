@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.musinsa.data.model.BannerData
 import com.example.musinsa.databinding.ItemContentsBannersBinding
 
-class BannerItemAdapter:
+class BannerItemAdapter(private val runWebListener: (String) -> Unit):
     ListAdapter<BannerData, BannerItemAdapter.BannerItemViewHolder>(BannerItemDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerItemViewHolder {
@@ -25,11 +25,15 @@ class BannerItemAdapter:
         holder.bind(getItem(position))
     }
 
-    class BannerItemViewHolder(private val binding: ItemContentsBannersBinding) :
+    inner class BannerItemViewHolder(private val binding: ItemContentsBannersBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(banner: BannerData) {
             binding.item = banner
+
+            itemView.setOnClickListener {
+                runWebListener(banner.linkURL)
+            }
         }
 
     }

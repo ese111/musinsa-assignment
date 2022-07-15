@@ -1,5 +1,6 @@
 package com.example.musinsa.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -27,7 +28,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val adapter = HomeAdapter(this)
+        val adapter = HomeAdapter(this) { link ->
+            val intent = Intent(this, WebActivity::class.java)
+            intent.putExtra("link", link)
+            startActivity(intent)
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.musinsa.data.model.GoodData
 import com.example.musinsa.databinding.ItemContentsGridBinding
 
-class ContentsAdapter: ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>(ContentsDiffUtil) {
+class ContentsAdapter(private val runWebListener: (String) -> Unit): ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>(ContentsDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentsViewHolder {
         return ContentsViewHolder(ItemContentsGridBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -18,10 +18,14 @@ class ContentsAdapter: ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>
         holder.bind(getItem(position))
     }
 
-    class ContentsViewHolder(private val binding: ItemContentsGridBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ContentsViewHolder(private val binding: ItemContentsGridBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: GoodData) {
             binding.item = item
+
+            itemView.setOnClickListener {
+                runWebListener(item.linkURL)
+            }
         }
 
     }
