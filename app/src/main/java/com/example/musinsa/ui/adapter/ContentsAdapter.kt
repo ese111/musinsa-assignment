@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.musinsa.common.ItemClickListener
 import com.example.musinsa.data.model.GoodData
 import com.example.musinsa.databinding.ItemContentsGridBinding
 
-class ContentsAdapter(private val runWebListener: (String) -> Unit): ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>(ContentsDiffUtil) {
+class ContentsAdapter(private val listener: ItemClickListener): ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>(ContentsDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentsViewHolder {
         return ContentsViewHolder(ItemContentsGridBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -24,7 +25,7 @@ class ContentsAdapter(private val runWebListener: (String) -> Unit): ListAdapter
             binding.item = item
 
             itemView.setOnClickListener {
-                runWebListener(item.linkURL)
+                listener.moveToWeb(item.linkURL)
             }
         }
 

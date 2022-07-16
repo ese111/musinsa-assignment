@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.musinsa.common.ItemClickListener
 import com.example.musinsa.common.logger
 import com.example.musinsa.common.UiState
 import com.example.musinsa.databinding.ActivityHomeBinding
@@ -16,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), ItemClickListener {
 
     private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
@@ -28,11 +29,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val adapter = HomeAdapter(this) { link ->
-            val intent = Intent(this, WebActivity::class.java)
-            intent.putExtra("link", link)
-            startActivity(intent)
-        }
+        val adapter = HomeAdapter(this, this)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -41,7 +38,6 @@ class HomeActivity : AppCompatActivity() {
                         is UiState.Error -> Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
                         is UiState.Success -> {
                             adapter.submitList(it.data)
-                            logger("Success ${it.data.size}")
                         }
                         is UiState.Loading -> logger("Loading")
                         is UiState.Empty -> logger("empty")
@@ -51,5 +47,23 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.rvHomeView.adapter = adapter
+    }
+
+    override fun moveToWeb(link: String) {
+        val intent = Intent(this, WebActivity::class.java)
+        intent.putExtra("link", link)
+        startActivity(intent)
+    }
+
+    override fun setNextGridPage(position: Int) {
+        viewModel.setNextGridPage(position)
+    }
+
+    override fun shuffleData(position: Int) {
+        viewModel.shuffleData(position)
+    }
+
+    override fun setNextStylePage(position: Int) {
+        viewModel.setNextStylePage(position)
     }
 }

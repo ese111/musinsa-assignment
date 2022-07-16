@@ -4,10 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.musinsa.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.text.DecimalFormat
 
 @BindingAdapter("setSaleRate")
@@ -31,10 +28,15 @@ fun setPrice(textView: TextView, price: Int) {
 
 @BindingAdapter("icon")
 fun setTitleIcon(textView: TextView, iconLink: String) {
+    val ceh = CoroutineExceptionHandler { _, throwable ->
+        logger("$throwable")
+    }
+    //초기화
+    textView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null)
+
     if(iconLink != "") {
-        CoroutineScope(Job()).launch(Dispatchers.Main.immediate) {
+        CoroutineScope(Job() + ceh).launch(Dispatchers.Main.immediate) {
             val drawable = getDrawable(textView.context, iconLink)
-            logger("drawable $drawable")
             textView.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null)
         }
     }

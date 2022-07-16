@@ -31,11 +31,11 @@ fun setAllButton(textView: TextView, link: String) {
 @BindingAdapter("setFooter")
 fun setFooter(button: MaterialButton, data: FooterData) {
     button.text = data.title
+    button.icon = null
     if (data.iconURL != "") {
         CoroutineScope(Job()).launch(Dispatchers.Main.immediate) {
             val drawable = getDrawable(button.context, data.iconURL)
             button.icon = drawable
         }
-
     }
 }

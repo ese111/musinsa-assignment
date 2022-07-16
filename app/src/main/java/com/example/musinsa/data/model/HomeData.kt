@@ -1,30 +1,29 @@
 package com.example.musinsa.data.model
 
-sealed class ModelData {}
-
 data class HomeData(
-    val contents: ContentsData,
-    val footer: FooterData,
-    val header: HeaderData
+    val contents: ContentsData = ContentsData(),
+    val footer: FooterData = FooterData(),
+    val header: HeaderData = HeaderData()
 )
 
 data class ContentsData(
-    val banners: List<BannerData>,
-    val goods: List<GoodData>,
-    val styles: List<StyleData>,
-    val type: String
+    val banners: List<BannerData> = emptyList(),
+    val goods: List<GoodData> = emptyList(),
+    val styles: List<StyleData> = emptyList(),
+    val type: String = "",
+    val isEndPage: Boolean = false
 )
 
 data class HeaderData(
-    val iconURL: String,
-    val linkURL: String,
-    val title: String
+    val iconURL: String = "",
+    val linkURL: String = "",
+    val title: String = ""
 )
 
 data class FooterData(
-    val iconURL: String,
-    val title: String,
-    val type: String
+    val iconURL: String = "",
+    val title: String = "",
+    val type: String = ""
 )
 
 data class GoodData(
@@ -33,7 +32,7 @@ data class GoodData(
     val linkURL: String,
     val price: Int,
     val saleRate: Int,
-    val thumbnailURL: String
+    val thumbnailURL: String,
 )
 
 data class StyleData(

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/gl_title"
             android:textColor="@color/white"
-            android:textSize="35sp"
+            android:textSize="25sp"
             android:text="@{item.title}"
             tools:text="쿠어 21 s/s"/>
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/gl_description"
             android:textColor="@color/white"
-            android:textSize="35sp"
+            android:textSize="25sp"
             android:text="@{item.description}"
             tools:text="신상품 한정 발매"/>
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/gl_keyword"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="@{item.keyword}"
             tools:text="신제품 증정 이벤트"/>
 

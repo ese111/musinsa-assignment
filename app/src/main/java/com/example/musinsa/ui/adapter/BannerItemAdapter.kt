@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.musinsa.common.ItemClickListener
 import com.example.musinsa.data.model.BannerData
 import com.example.musinsa.databinding.ItemContentsBannersBinding
 
-class BannerItemAdapter(private val runWebListener: (String) -> Unit):
+class BannerItemAdapter(private val listener: ItemClickListener):
     ListAdapter<BannerData, BannerItemAdapter.BannerItemViewHolder>(BannerItemDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerItemViewHolder {
@@ -32,7 +33,7 @@ class BannerItemAdapter(private val runWebListener: (String) -> Unit):
             binding.item = banner
 
             itemView.setOnClickListener {
-                runWebListener(banner.linkURL)
+                listener.moveToWeb(banner.linkURL)
             }
         }
 
