@@ -31,7 +31,7 @@ fun setTitleIcon(textView: TextView, iconLink: String) {
     val ceh = CoroutineExceptionHandler { _, throwable ->
         logger("$throwable")
     }
-    //초기화
+
     textView.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null)
 
     if(iconLink != "") {

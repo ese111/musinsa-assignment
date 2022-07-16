@@ -34,6 +34,7 @@
             app:layout_constraintTop_toBottomOf="@id/gl_title"
             android:textColor="@color/white"
             android:textSize="25sp"
+            android:layout_marginStart="10dp"
             android:text="@{item.title}"
             tools:text="쿠어 21 s/s"/>
 
@@ -50,6 +51,7 @@
             app:layout_constraintTop_toBottomOf="@id/gl_description"
             android:textColor="@color/white"
             android:textSize="25sp"
+            android:layout_marginStart="10dp"
             android:text="@{item.description}"
             tools:text="신상품 한정 발매"/>
 
@@ -67,6 +69,7 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:text="@{item.keyword}"
+            android:layout_marginStart="10dp"
             tools:text="신제품 증정 이벤트"/>
 
 

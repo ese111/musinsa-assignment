@@ -9,7 +9,7 @@ import com.example.musinsa.common.ItemClickListener
 import com.example.musinsa.data.model.BannerData
 import com.example.musinsa.databinding.ItemContentsBannersBinding
 
-class BannerItemAdapter(private val listener: ItemClickListener):
+class BannerItemAdapter(private val listener: ItemClickListener) :
     ListAdapter<BannerData, BannerItemAdapter.BannerItemViewHolder>(BannerItemDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerItemViewHolder {

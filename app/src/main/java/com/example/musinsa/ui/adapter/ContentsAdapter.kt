@@ -9,17 +9,25 @@ import com.example.musinsa.common.ItemClickListener
 import com.example.musinsa.data.model.GoodData
 import com.example.musinsa.databinding.ItemContentsGridBinding
 
-class ContentsAdapter(private val listener: ItemClickListener): ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>(ContentsDiffUtil) {
+class ContentsAdapter(private val listener: ItemClickListener) :
+    ListAdapter<GoodData, ContentsAdapter.ContentsViewHolder>(ContentsDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentsViewHolder {
-        return ContentsViewHolder(ItemContentsGridBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ContentsViewHolder(
+            ItemContentsGridBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ContentsViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    inner class ContentsViewHolder(private val binding: ItemContentsGridBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ContentsViewHolder(private val binding: ItemContentsGridBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: GoodData) {
             binding.item = item
@@ -31,7 +39,7 @@ class ContentsAdapter(private val listener: ItemClickListener): ListAdapter<Good
 
     }
 
-    private object ContentsDiffUtil: DiffUtil.ItemCallback<GoodData>() {
+    private object ContentsDiffUtil : DiffUtil.ItemCallback<GoodData>() {
 
         override fun areItemsTheSame(oldItem: GoodData, newItem: GoodData) =
             oldItem == newItem

@@ -3,7 +3,6 @@ package com.example.musinsa.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.musinsa.common.UiState
-import com.example.musinsa.common.logger
 import com.example.musinsa.data.model.ContentsData
 import com.example.musinsa.data.model.GoodData
 import com.example.musinsa.data.model.HomeData
@@ -26,15 +25,15 @@ class HomeViewModel @Inject constructor(
     private val _homeData = MutableStateFlow<UiState<List<HomeData>>>(UiState.Empty)
     val homeData: StateFlow<UiState<List<HomeData>>> = _homeData
 
-    private var gridPaging = 0
+    private var currentGridPage = 0
 
-    private var stylePaging = 0
+    private var currentStylePage = 0
 
     init {
-        getHomeData()
+        setHomeData()
     }
 
-    private fun getHomeData() {
+    private fun setHomeData() {
         viewModelScope.launch {
             _homeData.value = UiState.Loading
             homeRepository.getHomeData()
@@ -42,71 +41,76 @@ class HomeViewModel @Inject constructor(
                     _homeData.value = UiState.Error("네트워크 연결 실패")
                 }.collect {
                     _homeData.value = it?.let { data ->
-                        originHomeData.value = UiState.Success(data)
-                        val homeDataList = mutableListOf<HomeData>()
-                        data.forEachIndexed { index, homeData ->
-                            when (homeData.contents.type) {
-                                "GRID" -> {
-                                    val pagingData = HomeData(
-                                        setPagingGridData(index, homeData.contents),
-                                        homeData.footer,
-                                        homeData.header
-                                    )
-                                    homeDataList.add(pagingData)
-                                }
-                                "STYLE" -> {
-                                    val pagingData = HomeData(
-                                        setPagingStyleData(index, homeData.contents),
-                                        homeData.footer,
-                                        homeData.header
-                                    )
-                                    homeDataList.add(pagingData)
-                                }
-                                else -> {
-                                    homeDataList.add(homeData)
-                                }
-                            }
-                        }
-                        UiState.Success(homeDataList)
+                        setOriginHomeData(data)
+                        UiState.Success(getPagingHomeDate(data))
                     } ?: UiState.Error("data load fail")
                 }
         }
     }
 
-    private fun setPagingStyleData(position: Int, contents: ContentsData): ContentsData {
-        val tmpList = mutableListOf<StyleData>()
-        for (i in 0 until 4) {
-            tmpList.add(contents.styles[i])
-            stylePaging = i
-        }
-        return ContentsData(styles = tmpList, type = contents.type)
+    private fun setOriginHomeData(data: List<HomeData>) {
+        originHomeData.value = UiState.Success(data)
     }
 
-    private fun setPagingGridData(position: Int, contents: ContentsData): ContentsData {
-        val tmpList = mutableListOf<GoodData>()
+    private fun getPagingHomeDate(data: List<HomeData>): List<HomeData> {
+        val homeDataList = mutableListOf<HomeData>()
+        data.forEach { homeData ->
+            when (homeData.contents.type) {
+                "GRID" -> {
+                    val pagingData = HomeData(
+                        setPagingGridData(homeData.contents),
+                        homeData.footer,
+                        homeData.header
+                    )
+                    homeDataList.add(pagingData)
+                }
+                "STYLE" -> {
+                    val pagingData = HomeData(
+                        setPagingStyleData(homeData.contents),
+                        homeData.footer,
+                        homeData.header
+                    )
+                    homeDataList.add(pagingData)
+                }
+                else -> {
+                    homeDataList.add(homeData)
+                }
+            }
+        }
+        return homeDataList
+    }
+
+    private fun setPagingStyleData(contents: ContentsData): ContentsData {
+        val afterPagingList = mutableListOf<StyleData>()
+
+        for (i in 0 until 4) {
+            afterPagingList.add(contents.styles[i])
+            currentStylePage = i
+        }
+        return ContentsData(styles = afterPagingList, type = contents.type)
+    }
+
+    private fun setPagingGridData(contents: ContentsData): ContentsData {
+        val afterPagingList = mutableListOf<GoodData>()
 
         for (i in 0 until 6) {
-            tmpList.add(contents.goods[i])
-            gridPaging = i
+            afterPagingList.add(contents.goods[i])
+            currentGridPage = i
         }
-        return ContentsData(goods = tmpList, type = contents.type)
+        return ContentsData(goods = afterPagingList, type = contents.type)
     }
 
     fun setNextStylePage(position: Int) {
         val originHomeData = originHomeData.value._data?.get(position) ?: return
-        val tmp = mutableListOf<StyleData>()
         val currentData = _homeData.value._data?.get(position) ?: return
-        var isEndPage = false
-        tmp.addAll(currentData.contents.styles)
-        repeat ( 2) {
-            if (stylePaging + 1 < originHomeData.contents.styles.size) {
-                tmp.add(originHomeData.contents.styles[stylePaging + 1])
-                stylePaging++
-            }
-        }
+        val styles = mutableListOf<StyleData>()
 
-        if(stylePaging == originHomeData.contents.styles.size - 1) {
-            isEndPage = true
+        styles.addAll(currentData.contents.styles)
+        repeat(2) {
+            if (currentStylePage + 1 < originHomeData.contents.styles.size) {
+                styles.add(originHomeData.contents.styles[currentStylePage + 1])
+                currentStylePage++
+            }
         }
 
         setChangeHomData(
@@ -114,67 +118,92 @@ class HomeViewModel @Inject constructor(
             HomeData(
                 header = originHomeData.header,
                 footer = originHomeData.footer,
-                contents = ContentsData(styles = tmp, type = originHomeData.contents.type, isEndPage = isEndPage)
+                contents = ContentsData(
+                    styles = styles,
+                    type = originHomeData.contents.type,
+                    isEndPage = isEndPage(currentStylePage, originHomeData.contents.styles.size)
+                )
             )
         )
+    }
+
+    private fun isEndPage(currentPage: Int,originDataSize: Int): Boolean {
+        var isEndPage = false
+        if (currentPage == originDataSize - 1) {
+            isEndPage = true
+        }
+        return isEndPage
     }
 
     fun setNextGridPage(position: Int) {
         val originHomeData = originHomeData.value._data?.get(position) ?: return
         val currentData = _homeData.value._data?.get(position) ?: return
+
         val tmp = mutableListOf<GoodData>()
-        var isEndPage = false
         tmp.addAll(currentData.contents.goods)
-        repeat (3) {
-            if (gridPaging + 1 < originHomeData.contents.goods.size) {
-                tmp.add(originHomeData.contents.goods[gridPaging + 1])
-                gridPaging++
+
+        repeat(3) {
+            if (currentGridPage + 1 < originHomeData.contents.goods.size) {
+                tmp.add(originHomeData.contents.goods[currentGridPage + 1])
+                currentGridPage++
             }
         }
-        if(gridPaging == originHomeData.contents.goods.size - 1) {
-            isEndPage = true
-        }
+
         setChangeHomData(
             position,
             HomeData(
                 header = originHomeData.header,
                 footer = originHomeData.footer,
-                contents = ContentsData(goods = tmp, type = originHomeData.contents.type, isEndPage = isEndPage)
+                contents = ContentsData(
+                    goods = tmp,
+                    type = originHomeData.contents.type,
+                    isEndPage = isEndPage(currentGridPage, originHomeData.contents.goods.size)
+                )
             )
         )
     }
 
     fun shuffleData(position: Int) {
         val originHomeData = _homeData.value._data?.get(position) ?: return
-        val size = originHomeData.contents.goods.size
-        val random = Random
-        val tmpList = mutableListOf<GoodData>()
-        val randomNumbers = mutableMapOf<Int, Int>()
-        var i = 0
-
-        while (i < size) {
-            val num = random.nextInt(size)
-            if (!randomNumbers.containsKey(num)) {
-                randomNumbers[num] = i
-                i++
-            }
-        }
-        randomNumbers.forEach { (k, v) ->
-            tmpList.add(v, originHomeData.contents.goods[k])
-        }
+        val newGoods = getShuffleList(originHomeData)
 
         setChangeHomData(
             position,
             HomeData(
                 header = originHomeData.header,
                 footer = originHomeData.footer,
-                contents = ContentsData(goods = tmpList, type = originHomeData.contents.type)
+                contents = ContentsData(goods = newGoods, type = originHomeData.contents.type)
             )
         )
     }
 
+    private fun getShuffleList(originHomeData: HomeData): List<GoodData> {
+        val randomNumbers = getRandomDataMap(originHomeData.contents.goods.size)
+        val newGoods = mutableListOf<GoodData>()
+        randomNumbers.forEach { (k, v) ->
+            newGoods.add(v, originHomeData.contents.goods[k])
+        }
+        return newGoods
+    }
+
+    private fun getRandomDataMap(size: Int): Map<Int, Int> {
+        val randomNumbers = mutableMapOf<Int, Int>()
+
+        var i = 0
+        while (i < size) {
+            val num = Random.nextInt(size)
+            if (!randomNumbers.containsKey(num)) {
+                randomNumbers[num] = i
+                i++
+            }
+        }
+
+        return randomNumbers
+    }
+
     private fun setChangeHomData(position: Int, data: HomeData) {
         val list = mutableListOf<HomeData>()
+
         _homeData.value._data?.forEachIndexed { index, homeData ->
             if (index != position) {
                 list.add(homeData)
@@ -182,6 +211,7 @@ class HomeViewModel @Inject constructor(
                 list.add(data)
             }
         }
+
         _homeData.value = UiState.Success(list)
     }
 }

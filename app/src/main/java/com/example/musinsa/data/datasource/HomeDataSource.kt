@@ -7,9 +7,7 @@ import javax.inject.Singleton
 
 @Singleton
 class HomeDataSource @Inject constructor(private val api: HomeApi) {
-
     fun getHomeData() = flow {
         emit(api.getHomeData())
     }
-
 }

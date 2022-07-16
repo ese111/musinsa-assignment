@@ -34,8 +34,12 @@ class HomeActivity : AppCompatActivity(), ItemClickListener {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.homeData.collect {
-                    when(it) {
-                        is UiState.Error -> Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+                    when (it) {
+                        is UiState.Error -> Toast.makeText(
+                            applicationContext,
+                            it.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
                         is UiState.Success -> {
                             adapter.submitList(it.data)
                         }

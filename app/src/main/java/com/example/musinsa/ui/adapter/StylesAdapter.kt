@@ -9,10 +9,17 @@ import com.example.musinsa.common.ItemClickListener
 import com.example.musinsa.data.model.StyleData
 import com.example.musinsa.databinding.ItemContentsStyleBinding
 
-class StylesAdapter(private val listener: ItemClickListener) : ListAdapter<StyleData, StylesAdapter.StyleItemViewHolder>(StyleDiffUtil) {
+class StylesAdapter(private val listener: ItemClickListener) :
+    ListAdapter<StyleData, StylesAdapter.StyleItemViewHolder>(StyleDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StyleItemViewHolder {
-        return StyleItemViewHolder(ItemContentsStyleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return StyleItemViewHolder(
+            ItemContentsStyleBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: StyleItemViewHolder, position: Int) {
@@ -28,6 +35,7 @@ class StylesAdapter(private val listener: ItemClickListener) : ListAdapter<Style
             itemView.setOnClickListener {
                 listener.moveToWeb(item.linkURL)
             }
+
         }
 
     }

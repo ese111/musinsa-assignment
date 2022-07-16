@@ -22,17 +22,24 @@ class WebActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val link = intent.getStringExtra("link")
-        binding.pbWebLoading.visibility = View.GONE
-        link?.let { initWeb(it) }
+        startProgressbar()
+        link?.let { initWebView(it) }
     }
 
-    private fun initWeb(link: String) {
+    private fun endProgressbar() {
+        binding.pbWebLoading.visibility = View.GONE
+    }
+
+    private fun startProgressbar() {
+        binding.pbWebLoading.visibility = View.VISIBLE
+    }
+
+    private fun initWebView(link: String) {
         binding.wvWeb.apply {
             webViewClient = AppWebViewClient()
             loadUrl(link)
             settings.domStorageEnabled = true
         }
-
     }
 
     inner class AppWebViewClient: WebViewClient() {
@@ -47,12 +54,12 @@ class WebActivity : AppCompatActivity() {
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-            binding.pbWebLoading.visibility = View.VISIBLE
+            startProgressbar()
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            binding.pbWebLoading.visibility = View.GONE
+            endProgressbar()
         }
     }
 }

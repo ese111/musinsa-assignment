@@ -14,18 +14,6 @@ data class ContentsData(
     val isEndPage: Boolean = false
 )
 
-data class HeaderData(
-    val iconURL: String = "",
-    val linkURL: String = "",
-    val title: String = ""
-)
-
-data class FooterData(
-    val iconURL: String = "",
-    val title: String = "",
-    val type: String = ""
-)
-
 data class GoodData(
     val brandName: String,
     val hasCoupon: Boolean,
@@ -47,5 +35,21 @@ data class BannerData(
     val thumbnailURL: String,
     val title: String
 )
+
+data class HeaderData(
+    val iconURL: String = "",
+    val linkURL: String = "",
+    val title: String = ""
+)
+
+data class FooterData(
+    val iconURL: String = "",
+    val title: String = "",
+    val type: String = ""
+)
+
+
+
+
 
 
